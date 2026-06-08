@@ -146,7 +146,9 @@ def reveal_results(results):
     print("   🎲  ROUND 1 — NORMAL TEAMS  🎲")
     separator("═", 60)
 
-    print("\nPress Enter to reveal teams...\n")
+    input()
+
+    print("\nRevealing teams...\n")
 
     for result in results:
         separator()
@@ -161,7 +163,7 @@ def reveal_results(results):
             print(f"    •   {team}")
             print()
 
-        input("  Press Enter for the next participant...")
+        input("  Next participant...")
 
         clear_screen()
 
@@ -190,7 +192,7 @@ def reveal_results(results):
 
         print(f"\n    ⭐  {result['elite']}  ← Top 12 TEAM\n")
 
-        input("  Press Enter for the next participant...")
+        input("  Next participant...")
 
         clear_screen()
 
@@ -340,12 +342,16 @@ def main():
     # Randomize participant reveal order
     random.shuffle(names)
 
+    print("\n  Randomizing Participants\n")
+
+    input()
+
     print("\n  Participants:\n")
 
     for index, name in enumerate(names, start=1):
         print(f"    {index:>2}. {name}")
 
-    print("\nReady for the draw? Press Enter to begin...")
+    print("\nReady for the draw...")
 
     input()
 
@@ -358,7 +364,7 @@ def main():
     print("   🎲  LET THE DRAW BEGIN!  🎲")
 
     separator("═", 56)
-    input("\nPress Enter to start")
+    input()
 
     reveal_results(results)
 
