@@ -252,6 +252,71 @@ def save_txt(results):
 
     print(f"\n  💾 Results saved to: {filename}")
 
+
+def validate_results(results):
+    """Validate that the draw was completed correctly."""
+
+
+    all_teams = []
+
+    for result in results:
+        all_teams.extend(result["others"])
+        all_teams.append(result["elite"])
+
+    total_teams = len(all_teams)
+    unique_teams = len(set(all_teams))
+
+    expected_teams = len(ELITE_TEAMS) + len(OTHER_TEAMS)
+
+    separator("═", 60)
+    print("   ✅  VALIDATION CHECKS")
+    separator("═", 60)
+
+    # Check total number of teams
+    print(f"\n  Total teams assigned: {total_teams}")
+
+    if total_teams == expected_teams:
+        print("  ✅ Correct total number of teams")
+    else:
+        print("  ❌ Incorrect total number of teams")
+
+    # Check duplicates
+    print(f"\n  Unique teams assigned: {unique_teams}")
+
+    if unique_teams == total_teams:
+        print("  ✅ No duplicate teams found")
+    else:
+        print("  ❌ Duplicate teams detected")
+
+        duplicates = []
+
+        for team in set(all_teams):
+            if all_teams.count(team) > 1:
+                duplicates.append(team)
+
+        print("\n  Duplicate teams:")
+        for team in duplicates:
+            print(f"    • {team}")
+
+    # Check each participant has 4 teams
+    valid_participants = True
+
+    for result in results:
+        participant_total = len(result["others"]) + 1
+
+        if participant_total != 4:
+            valid_participants = False
+
+            print(
+                f"\n  ❌ {result['name']} "
+                f"has {participant_total} teams instead of 4"
+            )
+
+    if valid_participants:
+        print("\n  ✅ Every participant has exactly 4 teams")
+
+    separator("═", 60)
+
 # ══════════════════════════════════════════════════════════════
 
 # MAIN
@@ -299,6 +364,8 @@ def main():
     input("\nPress Enter to view the final summary...")
 
     final_summary(results)
+
+    validate_results(results)
 
     print("\nSave results to a .txt file? [Y/N]")
 
