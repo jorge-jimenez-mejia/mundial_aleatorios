@@ -170,10 +170,10 @@ def reveal_results(results):
     # ═══════════════════════════════════════
 
     separator("═", 60)
-    print("   ⭐  FINAL ROUND — ELITE TEAMS  ⭐")
+    print("   ⭐  FINAL ROUND — Top 12 TEAMS  ⭐")
     separator("═", 60)
 
-    print("\nNow revealing the elite teams...\n")
+    print("\nNow revealing the top 12 teams...\n")
 
     input("Press Enter to continue...")
 
@@ -188,7 +188,7 @@ def reveal_results(results):
 
         input("\n  Press Enter to reveal elite team → ")
 
-        print(f"\n    ⭐  {result['elite']}  ← ELITE TEAM\n")
+        print(f"\n    ⭐  {result['elite']}  ← Top 12 TEAM\n")
 
         input("  Press Enter for the next participant...")
 
@@ -208,7 +208,7 @@ def final_summary(results):
 
     print(
         f"\n  {'PARTICIPANT':<18} "
-        f"{'ELITE TEAM ⭐':<28} "
+        f"{'Top 12 TEAM ⭐':<28} "
         f"{'OTHER TEAMS'}"
     )
 
@@ -246,11 +246,76 @@ def save_txt(results):
             for team in result["others"]:
                 file.write(f"   • {team}\n")
 
-                file.write(f"   ⭐ {result['elite']} (elite)\n")
+            file.write(f"   ⭐ {result['elite']} (Top 12 Team)\n")
 
             file.write("\n")
 
     print(f"\n  💾 Results saved to: {filename}")
+
+
+def validate_results(results):
+    """Validate that the draw was completed correctly."""
+
+
+    all_teams = []
+
+    for result in results:
+        all_teams.extend(result["others"])
+        all_teams.append(result["elite"])
+
+    total_teams = len(all_teams)
+    unique_teams = len(set(all_teams))
+
+    expected_teams = len(ELITE_TEAMS) + len(OTHER_TEAMS)
+
+    separator("═", 60)
+    print("   ✅  VALIDATION CHECKS")
+    separator("═", 60)
+
+    # Check total number of teams
+    print(f"\n  Total teams assigned: {total_teams}")
+
+    if total_teams == expected_teams:
+        print("  ✅ Correct total number of teams")
+    else:
+        print("  ❌ Incorrect total number of teams")
+
+    # Check duplicates
+    print(f"\n  Unique teams assigned: {unique_teams}")
+
+    if unique_teams == total_teams:
+        print("  ✅ No duplicate teams found")
+    else:
+        print("  ❌ Duplicate teams detected")
+
+        duplicates = []
+
+        for team in set(all_teams):
+            if all_teams.count(team) > 1:
+                duplicates.append(team)
+
+        print("\n  Duplicate teams:")
+        for team in duplicates:
+            print(f"    • {team}")
+
+    # Check each participant has 4 teams
+    valid_participants = True
+
+    for result in results:
+        participant_total = len(result["others"]) + 1
+
+        if participant_total != 4:
+            valid_participants = False
+
+            print(
+                f"\n  ❌ {result['name']} "
+                f"has {participant_total} teams instead of 4"
+            )
+
+    if valid_participants:
+        print("\n  ✅ Every participant has exactly 4 teams")
+
+    separator("═", 60)
 
 # ══════════════════════════════════════════════════════════════
 
@@ -293,12 +358,15 @@ def main():
     print("   🎲  LET THE DRAW BEGIN!  🎲")
 
     separator("═", 56)
+    input("\nPress Enter to start")
 
     reveal_results(results)
 
     input("\nPress Enter to view the final summary...")
 
     final_summary(results)
+
+    validate_results(results)
 
     print("\nSave results to a .txt file? [Y/N]")
 
