@@ -170,10 +170,10 @@ def reveal_results(results):
     # ═══════════════════════════════════════
 
     separator("═", 60)
-    print("   ⭐  FINAL ROUND — ELITE TEAMS  ⭐")
+    print("   ⭐  FINAL ROUND — Top 12 TEAMS  ⭐")
     separator("═", 60)
 
-    print("\nNow revealing the elite teams...\n")
+    print("\nNow revealing the top 12 teams...\n")
 
     input("Press Enter to continue...")
 
@@ -188,7 +188,7 @@ def reveal_results(results):
 
         input("\n  Press Enter to reveal elite team → ")
 
-        print(f"\n    ⭐  {result['elite']}  ← ELITE TEAM\n")
+        print(f"\n    ⭐  {result['elite']}  ← Top 12 TEAM\n")
 
         input("  Press Enter for the next participant...")
 
@@ -208,7 +208,7 @@ def final_summary(results):
 
     print(
         f"\n  {'PARTICIPANT':<18} "
-        f"{'ELITE TEAM ⭐':<28} "
+        f"{'Top 12 TEAM ⭐':<28} "
         f"{'OTHER TEAMS'}"
     )
 
@@ -246,7 +246,7 @@ def save_txt(results):
             for team in result["others"]:
                 file.write(f"   • {team}\n")
 
-                file.write(f"   ⭐ {result['elite']} (elite)\n")
+            file.write(f"   ⭐ {result['elite']} (Top 12 Team)\n")
 
             file.write("\n")
 
@@ -358,6 +358,7 @@ def main():
     print("   🎲  LET THE DRAW BEGIN!  🎲")
 
     separator("═", 56)
+    input("\nPress Enter to start")
 
     reveal_results(results)
 
